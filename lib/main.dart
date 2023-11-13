@@ -12,11 +12,13 @@ class MyApp extends StatefulWidget {
 
 class _MyHomePageState extends State<MyApp> {
   String selectedValue = 'Reamur';
+  double suhuAwal = 0;
+  double hasil = 0;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
+        primarySwatch: Colors.blueGrey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
@@ -32,6 +34,11 @@ class _MyHomePageState extends State<MyApp> {
                       labelText: 'Celcius',
                       hintText: 'Masukkan angka temperatur dalam celcius',
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        suhuAwal = double.tryParse(value) ?? 0.0;
+                      });
+                    },
                   ),
                   SizedBox(
                     height: 10,
@@ -60,12 +67,23 @@ class _MyHomePageState extends State<MyApp> {
                     },
                   ),
                   Text('Hasil'),
-                  Text('365'),
+                  Text('$hasil'),
                   Row(
                     children: [
                       Expanded(
                           child: ElevatedButton(
-                              onPressed: () {}, child: Text('Konversi Suhu'))),
+                              onPressed: () {
+                                setState(() {
+                                  if (selectedValue == 'Reamur') {
+                                    hasil = suhuAwal * 0.8;
+                                  } else if (selectedValue == 'Kelvin') {
+                                    hasil = suhuAwal + 273.15;
+                                  } else {
+                                    hasil = (1.8 * suhuAwal) + 32;
+                                  }
+                                });
+                              },
+                              child: Text('Konversi Suhu'))),
                     ],
                   )
                 ],
